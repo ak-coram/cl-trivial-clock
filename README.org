@@ -1,0 +1,28 @@
+* cl-trivial-clock (WiP)
+
+#+begin_html
+<div align="center">
+  <a href="https://upload.wikimedia.org/wikipedia/commons/7/76/Al-jazari_elephant_clock.png" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Al-jazari_elephant_clock.png/382px-Al-jazari_elephant_clock.png" width="264" height="414">
+  </a>
+</div>
+<p align="center">
+  <a href="https://github.com/ak-coram/cl-trivial-clock/actions">
+    <img alt="Build Status" src="https://github.com/ak-coram/cl-trivial-clock/workflows/CI/badge.svg" />
+  </a>
+</p>
+#+end_html
+
+Common Lisp library to get accurate wall-clock times on multiple platforms
+
+** Disclaimer
+
+The current implementation of this library is incomplete and prone to
+breaking changes. It is not recommended to be used for anything.
+
+** Legal
+
+- Released under the MIT License
+- [[https://en.wikipedia.org/wiki/File:Al-jazari_elephant_clock.png][Source]] for README photo
+
+
