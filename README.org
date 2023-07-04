@@ -20,6 +20,13 @@ Common Lisp library to get accurate wall-clock times on multiple platforms
 The current implementation of this library is incomplete and prone to
 breaking changes. It is not recommended to be used for anything.
 
+** Outline
+
+cl:get-universal-time is limited to returning whole seconds, but some
+platforms can provide more accurate clocks. This library aims to wrap
+the platform-specific system calls for this purpose and fall back on
+cl:get-universal-time on unsupported platforms.
+
 ** Legal
 
 - Released under the MIT License
