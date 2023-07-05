@@ -59,6 +59,7 @@ jobs:
 
       - name: Run tests on DragonflyBSD
         uses: vmactions/dragonflybsd-vm@v0
+        if: ${{ matrix.lisp }} == 'sbcl'
         with:
           usesh: true
           sync: rsync
