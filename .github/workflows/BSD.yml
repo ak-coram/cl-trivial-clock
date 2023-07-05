@@ -71,3 +71,18 @@ jobs:
             mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
             cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
             ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
+
+      - name: Run tests on Solaris
+        uses: vmactions/solaris-vm@v0
+        with:
+          usesh: true
+          sync: rsync
+          copyback: false
+          prepare: |
+            pkg install -y ${{ matrix.lisp }} wget
+            wget https://beta.quicklisp.org/quicklisp.lisp
+            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
+          run: |
+            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
+            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
+            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
