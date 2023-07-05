@@ -45,7 +45,7 @@
   "Query OS for current wall-clock time
 
 Returns number of seconds since the unix epoch and the number of
-nanoseconds as a second value."
+additional nanoseconds as a second value."
   #+unix
   (cffi:with-foreign-object (p-timespec '(:pointer (:struct timespec)))
     (clock-gettime 0 p-timespec) ;; Use CLOCK_REALTIME

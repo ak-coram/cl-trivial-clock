@@ -48,7 +48,7 @@ distribution:
 ** Usage
 
 The function NOW returns the number of seconds since the unix epoch
-and the number of nanoseconds as a second value:
+and the number of additional nanoseconds as a second value:
 
 #+begin_src lisp
   ;; Get current wall-clock time:
