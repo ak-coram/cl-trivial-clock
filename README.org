@@ -29,9 +29,9 @@ used.
 
 The following software combinations are tested via GitHub actions:
 
-- [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS, OpenBSD, FreeBSD, DragonflyBSD, Solaris)
+- [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS, OpenBSD, FreeBSD, DragonflyBSD)
 - [[https://ccl.clozure.com/][CCL]] (Linux, macOS)
-- [[https://ecl.common-lisp.dev/][ECL]] (Linux, macOS, OpenBSD, FreeBSD, Solaris)
+- [[https://ecl.common-lisp.dev/][ECL]] (Linux, macOS, OpenBSD, FreeBSD)
 
 ** Installation
 
