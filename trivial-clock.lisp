@@ -1,6 +1,6 @@
 (defpackage #:trivial-clock
   (:use #:cl)
-  (:export now))
+  (:export +universal-time-epoch-offset+ now))
 
 (in-package #:trivial-clock)
 
