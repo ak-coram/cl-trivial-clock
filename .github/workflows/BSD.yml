@@ -1,0 +1,58 @@
+name: BSD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  test:
+    name: ${{ matrix.lisp }} on BSD
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        lisp: [sbcl, ecl]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests on OpenBSD
+        uses: vmactions/openbsd-vm@v0
+        with:
+          usesh: true
+          sync: rsync
+          copyback: false
+          prepare: |
+            if [[ "${{ matrix.lisp }}" = "sbcl" ]]; then
+              /usr/sbin/pkg_add ${{ matrix.lisp }}--threads
+            else
+              /usr/sbin/pkg_add ${{ matrix.lisp }}
+            fi
+
+            /usr/sbin/pkg_add wget
+            wget https://beta.quicklisp.org/quicklisp.lisp
+            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
+          run: |
+            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
+            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
+            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
+
+      - name: Run tests on FreeBSD
+        uses: vmactions/freebsd-vm@v0.3.0
+        with:
+          usesh: true
+          sync: rsync
+          copyback: false
+          prepare: |
+            sed 's/quarterly/latest/' /etc/pkg/FreeBSD.conf > /tmp/FreeBSD.conf && mv /tmp/FreeBSD.conf /etc/pkg/
+            pkg install -y ${{ matrix.lisp }} wget
+            wget https://beta.quicklisp.org/quicklisp.lisp
+            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
+          run: |
+            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
+            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
+            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
