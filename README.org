@@ -15,21 +15,49 @@
 
 Common Lisp library to get accurate wall-clock times on multiple platforms
 
-** Disclaimer
-
-The current implementation of this library is incomplete and prone to
-breaking changes. It is not recommended to be used for anything.
-
-** Outline
+** Overview
 
 cl:get-universal-time is limited to returning whole seconds, but some
 platforms can provide more accurate clocks. This library aims to wrap
-the platform-specific system calls for this purpose and fall back on
-cl:get-universal-time on unsupported platforms.
+platform-specific system calls for this purpose and fall back on
+cl:get-universal-time on any unsupported platform.
+
+Currently the [[https://man.archlinux.org/man/clock_gettime.2.en][clock_gettime]] call is used (with CLOCK_REALTIME) on all
+Unix systems and [[https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimepreciseasfiletime][GetSystemTimePreciseAsFileTime]] on Windows, except for
+Windows versions below version 8 where [[https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime][GetSystemTimeAsFileTime]] is
+used.
+
+The following software combinations are tested via GitHub actions:
+
+- [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS, OpenBSD, FreeBSD)
+- [[https://ccl.clozure.com/][CCL]] (Linux, macOS)
+- [[https://ecl.common-lisp.dev/][ECL]] (Linux, macOS, OpenBSD, FreeBSD)
+
+** Installation
+
+cl-trivial-clock can be installed via [[https://www.quicklisp.org/][Quicklisp]] from the [[https://ultralisp.org/][Ultralisp]]
+distribution:
+
+#+begin_src lisp
+  ;; Install the ultralisp distribution if you don't have it already
+  (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+  ;; Load cl-trivial-clock
+  (ql:quickload :trivial-clock)
+#+end_src
+
+** Usage
+
+The function NOW returns the number of seconds since the unix epoch
+and the number of nanoseconds as a seconds value:
+
+#+begin_src lisp
+  ;; Get current wall-clock time:
+  (trivial-clock:now)
+  ;; => 1688533183 (31 bits, #x64A4F8BF)
+  ;;    529460903 (29 bits, #x1F8EEEA7)
+#+end_src
 
 ** Legal
 
 - Released under the MIT License
 - [[https://en.wikipedia.org/wiki/File:Al-jazari_elephant_clock.png][Source]] for README photo
-
-
