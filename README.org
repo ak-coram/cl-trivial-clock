@@ -57,6 +57,23 @@ and the number of nanoseconds as a seconds value:
   ;;    529460903 (29 bits, #x1F8EEEA7)
 #+end_src
 
+*** Running tests
+
+- Load the tests via Quicklisp:
+
+#+begin_src lisp
+  (ql:quickload :trivial-clock/test)
+#+end_src
+
+- Use [[https://asdf.common-lisp.dev/][ASDF]] or [[https://fiveam.common-lisp.dev/][FiveAM]] to run the tests:
+
+#+begin_src lisp
+  ;; Using ASDF:
+  (asdf:test-system :trivial-clock)
+  ;; Using FiveAM directly:
+  (fiveam:run! :trivial-clock)
+#+end_src
+
 ** Legal
 
 - Released under the MIT License
