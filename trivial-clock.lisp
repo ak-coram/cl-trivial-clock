@@ -47,14 +47,14 @@
 Returns number of seconds since the unix epoch and the number of
 additional nanoseconds as a second value."
   #+unix
-  (cffi:with-foreign-object (p-timespec '(:pointer (:struct timespec)))
+  (cffi:with-foreign-object (p-timespec '(:struct timespec))
     (clock-gettime 0 p-timespec) ;; Use CLOCK_REALTIME
     (cffi:with-foreign-slots ((tv-sec tv-nsec)
                               p-timespec
                               (:struct timespec))
       (values tv-sec tv-nsec)))
   #+windows
-  (cffi:with-foreign-object (p-filetime '(:pointer (:struct filetime)))
+  (cffi:with-foreign-object (p-filetime '(:struct filetime))
     (get-system-time p-filetime)
     (cffi:with-foreign-slots ((low-dt hi-dt)
                               p-filetime
