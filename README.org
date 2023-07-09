@@ -27,7 +27,8 @@ Unix systems and [[https://learn.microsoft.com/en-us/windows/win32/api/sysinfoap
 Windows versions below version 8 where [[https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimeasfiletime][GetSystemTimeAsFileTime]] is
 used.
 
-The following software combinations are tested via GitHub actions:
+The following software combinations are tested via GitHub actions on
+x86-64:
 
 - [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS, OpenBSD, FreeBSD, DragonflyBSD)
 - [[https://ccl.clozure.com/][CCL]] (Linux, macOS)
