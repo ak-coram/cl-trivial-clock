@@ -17,10 +17,10 @@ Common Lisp library to get accurate wall-clock times on multiple platforms
 
 ** Overview
 
-cl:get-universal-time is limited to returning whole seconds, but some
+CL:GET-UNIVERSAL-TIME is limited to returning whole seconds, but some
 platforms can provide more accurate clocks. This library aims to wrap
 platform-specific system calls for this purpose and fall back on
-cl:get-universal-time on any unsupported platform.
+CL:GET-UNIVERSAL-TIME on any unsupported platform.
 
 Currently the [[https://man.archlinux.org/man/clock_gettime.2.en][clock_gettime]] call is used (with CLOCK_REALTIME) on all
 Unix systems and [[https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtimepreciseasfiletime][GetSystemTimePreciseAsFileTime]] on Windows, except for
