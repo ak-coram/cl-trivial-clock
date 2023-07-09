@@ -41,6 +41,10 @@
         (cffi:defcfun ("GetSystemTimeAsFileTime" get-system-time) :void
           (out-filetime (:pointer (:struct filetime)))))))
 
+(declaim (inline now)
+         (ftype (function () (values (unsigned-byte 64)
+                                     (integer 0 999999999)))
+                now))
 (defun now ()
   "Query OS for current wall-clock time
 
