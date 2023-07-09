@@ -1,4 +1,4 @@
-* cl-trivial-clock (WiP)
+* cl-trivial-clock
 
 #+begin_html
 <div align="center">
