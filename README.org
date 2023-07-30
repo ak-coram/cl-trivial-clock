@@ -78,4 +78,5 @@ and the number of additional nanoseconds as a second value:
 ** Legal
 
 - Released under the MIT License
+- [[https://developercertificate.org/][Developer Certificate of Origin]]
 - [[https://en.wikipedia.org/wiki/File:Al-jazari_elephant_clock.png][Source]] for README photo
