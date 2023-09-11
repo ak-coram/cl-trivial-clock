@@ -31,7 +31,7 @@ The following software combinations are tested via GitHub actions on
 x86-64:
 
 - [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS, OpenBSD, FreeBSD, DragonflyBSD)
-- [[https://ccl.clozure.com/][CCL]] (Linux, macOS)
+- [[https://ccl.clozure.com/][CCL]] (Linux, Windows, macOS)
 - [[https://ecl.common-lisp.dev/][ECL]] (Linux, macOS, OpenBSD, FreeBSD)
 
 ** Installation
