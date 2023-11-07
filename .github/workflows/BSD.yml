@@ -12,8 +12,35 @@ on:
     - cron: '0 0 1 * *'
 
 jobs:
-  test:
-    name: ${{ matrix.lisp }} on BSD
+  test_freebsd:
+    name: ${{ matrix.lisp }} on FreeBSD
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        lisp: [sbcl, ecl]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests on FreeBSD
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          sync: rsync
+          copyback: false
+          prepare: |
+            sed 's/quarterly/latest/' /etc/pkg/FreeBSD.conf > /tmp/FreeBSD.conf && mv /tmp/FreeBSD.conf /etc/pkg/
+            pkg install -y ${{ matrix.lisp }} wget
+            wget https://beta.quicklisp.org/quicklisp.lisp
+            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
+          run: |
+            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
+            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
+            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
+
+  test_otherbsds:
+    name: ${{ matrix.lisp }} on other BSDs
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -37,22 +64,6 @@ jobs:
             fi
 
             /usr/sbin/pkg_add wget
-            wget https://beta.quicklisp.org/quicklisp.lisp
-            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
-          run: |
-            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
-            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
-            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
-
-      - name: Run tests on FreeBSD
-        uses: vmactions/freebsd-vm@v0.3.0
-        with:
-          usesh: true
-          sync: rsync
-          copyback: false
-          prepare: |
-            sed 's/quarterly/latest/' /etc/pkg/FreeBSD.conf > /tmp/FreeBSD.conf && mv /tmp/FreeBSD.conf /etc/pkg/
-            pkg install -y ${{ matrix.lisp }} wget
             wget https://beta.quicklisp.org/quicklisp.lisp
             ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
           run: |
