@@ -21,7 +21,7 @@ jobs:
         lisp: [sbcl, ecl]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Run tests on FreeBSD
         uses: vmactions/freebsd-vm@v1
@@ -41,7 +41,7 @@ jobs:
 
   test_otherbsds:
     name: ${{ matrix.lisp }} on other BSDs
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -51,18 +51,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run tests on OpenBSD
-        uses: vmactions/openbsd-vm@v0
+        uses: vmactions/openbsd-vm@v1
         with:
           usesh: true
           sync: rsync
           copyback: false
           prepare: |
-            if [[ "${{ matrix.lisp }}" = "sbcl" ]]; then
-              /usr/sbin/pkg_add ${{ matrix.lisp }}--threads
-            else
-              /usr/sbin/pkg_add ${{ matrix.lisp }}
-            fi
-
+            /usr/sbin/pkg_add ${{ matrix.lisp }}
             /usr/sbin/pkg_add wget
             wget https://beta.quicklisp.org/quicklisp.lisp
             ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
@@ -72,25 +67,17 @@ jobs:
             ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
 
       - name: Run tests on DragonflyBSD
-        uses: vmactions/dragonflybsd-vm@v0
+        uses: vmactions/dragonflybsd-vm@v1
         continue-on-error: true
         with:
           usesh: true
           sync: rsync
           copyback: false
           prepare: |
-            if [[ "${{ matrix.lisp }}" = "sbcl" ]]; then
-              pkg install -y ${{ matrix.lisp }} wget
-              wget https://beta.quicklisp.org/quicklisp.lisp
-              ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
-            else
-              true
-            fi
+            pkg install -y ${{ matrix.lisp }} wget
+            wget https://beta.quicklisp.org/quicklisp.lisp
+            ${{ matrix.lisp }} --load quicklisp.lisp --eval '(progn (quicklisp-quickstart:install) (quit))'
           run: |
-            if [[ "${{ matrix.lisp }}" = "sbcl" ]]; then
-              mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
-              cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
-              ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
-            else
-              true
-            fi
+            mkdir -p ~/quicklisp/local-projects/cl-trivial-clock
+            cp trivial-clock* ~/quicklisp/local-projects/cl-trivial-clock
+            ${{ matrix.lisp }} --load ~/quicklisp/setup.lisp --eval "(ql:quickload :trivial-clock/test)" --eval "(progn (uiop:quit (if (uiop:symbol-call :fiveam '#:run! :trivial-clock) 0 1)))"
