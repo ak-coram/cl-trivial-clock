@@ -36,8 +36,13 @@ x86-64:
 
 ** Installation
 
-cl-trivial-clock can be installed via [[https://www.quicklisp.org/][Quicklisp]] from the [[https://ultralisp.org/][Ultralisp]]
-distribution:
+cl-trivial-clock can be installed via [[https://www.quicklisp.org/][Quicklisp]]:
+
+#+begin_src lisp
+  (ql:quickload :trivial-clock)
+#+end_src
+
+The latest version is available from the [[https://ultralisp.org/][Ultralisp]] distribution:
 
 #+begin_src lisp
   ;; Install the ultralisp distribution if you don't have it already
@@ -45,6 +50,8 @@ distribution:
   ;; Load cl-trivial-clock
   (ql:quickload :trivial-clock)
 #+end_src
+
+Alternatively you can also rely on [[https://github.com/ocicl/ocicl][ocicl]].
 
 ** Usage
 
