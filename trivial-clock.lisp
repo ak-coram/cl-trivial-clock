@@ -23,23 +23,11 @@
     (low-dt :uint32)
     (hi-dt :uint32))
 
-  (let* ((version-string (software-version))
-         (version (when version-string
-                    (loop :for i := 0 :then (1+ j)
-                          :as j := (position #\. version-string :start i)
-                          :collect (parse-integer (subseq version-string i j)
-                                                  :junk-allowed t)
-                          :while j)))
-         (is-precise-clock-available
-           (and version
-                (or (> (car version) 6)
-                    (and (eql (car version) 6)
-                         (>= (cadr version) 2))))))
-    (if is-precise-clock-available
-        (cffi:defcfun ("GetSystemTimePreciseAsFileTime" get-system-time) :void
-          (out-filetime (:pointer (:struct filetime))))
-        (cffi:defcfun ("GetSystemTimeAsFileTime" get-system-time) :void
-          (out-filetime (:pointer (:struct filetime)))))))
+  (if (cffi:foreign-symbol-pointer "GetSystemTimePreciseAsFileTime")
+      (cffi:defcfun ("GetSystemTimePreciseAsFileTime" get-system-time) :void
+        (out-filetime (:pointer (:struct filetime))))
+      (cffi:defcfun ("GetSystemTimeAsFileTime" get-system-time) :void
+        (out-filetime (:pointer (:struct filetime))))))
 
 (declaim (inline now)
          (ftype (function () (values (unsigned-byte 64)
