@@ -13,12 +13,18 @@ on:
 
 jobs:
   test_freebsd:
-    name: ${{ matrix.lisp }} on FreeBSD
-    runs-on: ubuntu-22.04
+    name: ${{ matrix.lisp }} on FreeBSD (${{ matrix.arch }})
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        lisp: [sbcl, ecl]
+        lisp: [sbcl, ccl, ecl]
+        arch: [x86_64, aarch64]
+        exclude:
+          - lisp: sbcl
+            arch: aarch64
+          - lisp: ccl
+            arch: aarch64
 
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +32,7 @@ jobs:
       - name: Run tests on FreeBSD
         uses: vmactions/freebsd-vm@v1
         with:
+          release: "15.0"
           usesh: true
           sync: rsync
           copyback: false
@@ -45,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lisp: [sbcl, ecl]
+        lisp: [sbcl]
 
     steps:
       - uses: actions/checkout@v4
